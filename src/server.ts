@@ -36,6 +36,20 @@ export const createServer = (): Express => {
         res.send(metrics);
     });
 
+    app.get('/', (_req, res) => {
+        res.status(200).json({
+            status: 'success',
+            message: 'Welcome to the FarmLokal Backend API',
+            version: '1.0.0',
+            documentation: 'https://github.com/Vidit151003/FarmLokalProject',
+            endpoints: {
+                health: '/health',
+                products: '/api/v1/products',
+                webhooks: '/api/v1/webhooks',
+            },
+        });
+    });
+
     app.use('/api/v1/products', rateLimitMiddleware, productsRoutes);
     app.use('/api/v1/webhooks', webhooksRoutes);
 
@@ -43,7 +57,7 @@ export const createServer = (): Express => {
         res.status(404).json({
             error: {
                 code: 'NOT_FOUND',
-                message: 'Resource not found',
+                message: 'The requested resource does not exist. Please check the documentation for available endpoints.',
             },
         });
     });

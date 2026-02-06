@@ -15,6 +15,7 @@ export class WebhooksService {
         this.cacheService = new CacheService('idempotency');
     }
 
+    // Orchestrates signature verification, idempotency checks, and persistence
     async processWebhook(
         payload: WebhookPayload,
         signature: string,

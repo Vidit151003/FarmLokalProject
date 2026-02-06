@@ -15,6 +15,7 @@ export class ProductsService {
         this.cacheService = new CacheService('cache:products');
     }
 
+    // Implements cursor-based pagination with caching
     async getProducts(params: ProductListParams): Promise<ProductListResult> {
         const cacheKey = generateCacheKey(params as any);
         const cached = await this.cacheService.get<ProductListResult>(cacheKey);

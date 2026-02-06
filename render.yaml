@@ -1,0 +1,54 @@
+services:
+  # Web Service for the Backend API
+  - type: web
+    name: farmlokal-backend
+    env: node
+    region: oregon
+    plan: free # or starter/standard
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health/ready
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: farmlokal-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: farmlokal-redis
+          property: port
+      - key: DATABASE_URL
+        sync: false # User must provide this
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        sync: false
+      - key: DATABASE_NAME
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: OAUTH_CLIENT_ID
+        sync: false
+      - key: OAUTH_CLIENT_SECRET
+        sync: false
+      - key: WEBHOOK_SECRET
+        sync: false
+      - key: EXTERNAL_API_BASE_URL
+        sync: false
+      - key: OAUTH_TOKEN_URL
+        sync: false
+
+  # Managed Redis Service
+  - type: redis
+    name: farmlokal-redis
+    region: oregon
+    plan: free # or starter
+    ipAllowList: [] # Access only from within Render
